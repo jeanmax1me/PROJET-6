@@ -17,26 +17,26 @@ export function createPhotographerCard(data) {
   return article;
 }
 
-function createImage(src, alt) {
+export function createImage(src, alt) {
   const img = document.createElement('img');
   img.setAttribute('src', src);
   img.setAttribute('alt', alt);
   return img;
 }
 
-function createHeading(headingType, text) {
+export function createHeading(headingType, text) {
   const heading = document.createElement(headingType);
   heading.textContent = text;
   return heading;
 }
 
-function createParagraph(text) {
+export function createParagraph(text) {
   const paragraph = document.createElement('p');
   paragraph.textContent = text;
   return paragraph;
 }
 
-function createCardContainer(children) {
+export function createCardContainer(children) {
   const imgcontainer = document.createElement('div');
   imgcontainer.classList.add('photographer_card');
   imgcontainer.setAttribute('tabindex', '0');
@@ -52,7 +52,7 @@ function createArticleWithLink(id, content, name) {
   const ariaLabel = `View Photographer Profile: ${name}`;
   link.setAttribute('aria-label', ariaLabel);
   content.forEach((element) => {
-    link.appendChild(element); // Wrap each element in the link
+    link.appendChild(element);
   });
 
   article.appendChild(link);
