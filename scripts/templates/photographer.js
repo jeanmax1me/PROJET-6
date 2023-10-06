@@ -12,7 +12,7 @@ export function createPhotographerCard(data) {
   const imgcontainer = createCardContainer([img]);
 
   const content = [imgcontainer, h2, h3, tag, prix];
-  const article = createArticleWithLink(id, content);
+  const article = createArticleWithLink(id, content, name);
 
   return article;
 }
@@ -46,10 +46,11 @@ function createCardContainer(children) {
   return imgcontainer;
 }
 
-function createArticleWithLink(id, content) {
+function createArticleWithLink(id, content, name) {
   const article = document.createElement('article');
   const link = createLinkWithHref(`photographer.html?id=${id}`);
-
+  const ariaLabel = `View Photographer Profile: ${name}`;
+  link.setAttribute('aria-label', ariaLabel);
   content.forEach((element) => {
     link.appendChild(element); // Wrap each element in the link
   });
