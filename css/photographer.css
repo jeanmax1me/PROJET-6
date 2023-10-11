@@ -1,6 +1,6 @@
 body {
     margin: 0 auto;
-    width: 1240px;
+    max-width: 1240px;
 }
 
 #contact_modal {
@@ -264,6 +264,35 @@ video {
   .photo-grid .photo {
     margin-bottom: 20px;
   }
+
+.price-and-likes {
+    height: 68px;
+    width: 376px;
+    background: #DB8876;
+    font-family: DM Sans;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 31px;
+    letter-spacing: 0em;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    right: 3%;    
+    border-radius: 5px;
+    color: #000000;
+}
+
+.price {
+    position: absolute;
+    right: 34px;
+}
+
+.total-likes {
+    padding-left: 31px;
+    padding-right: 4.62px;
+}
   
 .modal {
     border-radius: 5px;

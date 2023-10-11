@@ -3,6 +3,7 @@ import { createImage, createCardContainer, createHeading, createParagraph } from
 
 const urlSearchParams = new URLSearchParams(window.location.search);
 const photographerId = urlSearchParams.get('id');
+const likedMedia = new Set();
 
 if (photographerId) {
   getPhotographerById(photographerId)
@@ -24,6 +25,16 @@ if (photographerId) {
       const h3 = createHeading('h3', `${city}, ${country}`);
       const tag = createParagraph(tagline);
       photographHeader.append(h2, h3, tag);
+      const prix = createHeading('h3', price);
+      const priceContainer = document.createElement('p');
+      priceContainer.classList.add('price');
+      priceContainer.textContent = price + '€ / jour';
+      const parentContainer = document.querySelector('.price-and-likes'); // Replace with the actual selector of your container
+      parentContainer.appendChild(priceContainer);   
+      const heart = createHeartIcon();
+      const path = heart.querySelector('path'); // Select the path element within the heart SVG
+      path.setAttribute('fill', 'black'); // Change the fill color to black
+      parentContainer.appendChild(heart);      
     })
     .catch(error => {
       console.error('Error fetching photographer data:', error);
@@ -32,7 +43,7 @@ if (photographerId) {
   console.error('Photographer ID is missing or invalid.');
 }
 
-let photographerPhotos;
+let photographerPhotos = [];
 
 async function getPhotographerById(id) {
   try {
@@ -48,6 +59,7 @@ async function getPhotographerById(id) {
     createAndRenderMedia(photographerPhotos);
     sortPhotos('popularite');
 
+    
     if (!photographer) {
       throw new Error('Photographer not found');
     }
@@ -71,51 +83,74 @@ function createVideoElement(src, alt) {
 
 function createAndRenderMedia(photos) {
   if (!photos) {
-    // Handle the case where there's no media data
     console.error('No media data available for this photographer.');
     return;
   }
 
   const photoGrid = document.querySelector('.photo-grid');
-  photoGrid.innerHTML = ''; // Clear previous content
+  photoGrid.innerHTML = '';
 
   photos.forEach(mediaData => {
     const media = createMedia(mediaData);
-    const photoDiv = document.createElement('div');
-    photoDiv.classList.add('photo');
+
+    const mediaCard = document.createElement('div');
+    mediaCard.classList.add('photo');
+
 
     if (media.type === 'image') {
+      // Create the image element
       const image = document.createElement('img');
       image.src = media.url;
       image.alt = media.title;
-      photoDiv.appendChild(image);
+      mediaCard.appendChild(image);
     } else if (media.type === 'video') {
+      // Create the video element
       const video = createVideoElement(media.url, media.title);
-      photoDiv.appendChild(video);
+      mediaCard.appendChild(video);
     }
-
+     
     const photoInfo = document.createElement('div');
     photoInfo.classList.add('photo-info');
-
+    mediaCard.appendChild(photoInfo);
     const title = document.createElement('h3');
-    title.textContent = media.title;
-
-    const likescontainer = document.createElement('div');
-    likescontainer.classList.add('likes-container');
-
+    title.textContent = `${media.title}`;
+    photoInfo.appendChild(title);
+    // Create and add the heart icon
+        // Create the likes container
+        const likesContainer = document.createElement('div');
+        likesContainer.classList.add('likes-container');
+           // Create the likes text element
     const likes = document.createElement('p');
     likes.textContent = `${media.likes}`;
     likes.classList.add('photo-likes');
-
+    
+    likesContainer.appendChild(likes);
+    photoInfo.appendChild(likesContainer);
     const heart = createHeartIcon();
+    likesContainer.appendChild(heart);
+   
 
-    photoInfo.appendChild(title);
-    photoInfo.appendChild(likescontainer);
-    likescontainer.appendChild(likes);
-    likescontainer.appendChild(heart);
-    photoDiv.appendChild(photoInfo);
-    photoGrid.appendChild(photoDiv);
+
+    // Event listener for clicking the heart icon
+    heart.addEventListener('click', () => likeMedia(media.id, mediaCard, likes));
+
+    // Render the media card
+    photoGrid.appendChild(mediaCard);
   });
+}
+
+function likeMedia(mediaId, mediaCard, likesElement) {
+  if (!likedMedia.has(mediaId)) {
+    // Media hasn't been liked yet
+    const media = photographerPhotos.find(media => media.id === mediaId);
+    if (media) {
+      media.likes += 1;
+      likedMedia.add(mediaId);
+      likesElement.textContent = `${media.likes}`;
+      heart.classList.add('liked'); // You can add a CSS class to style the liked heart differently
+      updateTotalLikes();
+    }
+  }
 }
 
 
@@ -176,3 +211,42 @@ async function sortPhotos(sortBy) {
 document.getElementById('filter-date').addEventListener('click', () => sortPhotos('date'));
 document.getElementById('filter-titre').addEventListener('click', () => sortPhotos('titre'));
 document.getElementById('filter-popularite').addEventListener('click', () => sortPhotos('popularite'));
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  function calculateTotalLikes() {
+    const likeElements = document.querySelectorAll('.photo-likes');
+    let totalLikes = 0;
+
+    likeElements.forEach(likeElement => {
+      const likes = parseInt(likeElement.textContent);
+      if (!isNaN(likes)) {
+        totalLikes += likes;
+      }
+    });
+
+    return totalLikes;
+  }
+
+  function updateTotalLikes() {
+    const totalLikes = calculateTotalLikes();
+    const priceAndLikesContainer = document.querySelector('.total_likes');
+    priceAndLikesContainer.innerHTML = `<span class="total-likes">${totalLikes}</span>`
+  }
+
+  // Listen for changes to the DOM, e.g., when "photo-likes" elements are added or updated
+  const observer = new MutationObserver(updateTotalLikes);
+
+  // Specify the target node (the part of the DOM that might change)
+  const targetNode = document.querySelector('.photo-grid');
+
+  // Configure the observer to watch for changes to child elements
+  const config = { childList: true, subtree: true };
+
+  // Start observing
+  observer.observe(targetNode, config);
+
+  // Calculate and display the initial total likes
+  updateTotalLikes();
+});
