@@ -32,6 +32,8 @@ if (photographerId) {
   console.error('Photographer ID is missing or invalid.');
 }
 
+let photographerPhotos;
+
 async function getPhotographerById(id) {
   try {
     const response = await fetch(`../../data/photographers.json`);
@@ -42,8 +44,10 @@ async function getPhotographerById(id) {
 
     const data = await response.json();
     const photographer = data.photographers.find(photographer => photographer.id === parseInt(id, 10));
-    const photographerPhotos = data.media.filter(photo => photo.photographerId === parseInt(photographerId));
-    createAndRenderMedia(photographerPhotos); // Now, pass the media data to createAndRenderMedia
+    photographerPhotos = data.media.filter(photo => photo.photographerId === parseInt(photographerId));
+    createAndRenderMedia(photographerPhotos);
+    sortPhotos('popularite');
+
     if (!photographer) {
       throw new Error('Photographer not found');
     }
@@ -54,6 +58,7 @@ async function getPhotographerById(id) {
     throw error;
   }
 }
+
 
 function createVideoElement(src, alt) {
   const video = document.createElement('video');
@@ -130,3 +135,44 @@ function createHeartIcon() {
 
   return heart;
 }
+
+
+// Sorting functions
+function sortByPopularity(photos) {
+  return photos.sort((a, b) => b.likes - a.likes);
+}
+
+function sortByDate(photos) {
+  return photos.sort((a, b) => new Date(a.date) - new Date(b.date));
+}
+
+function sortByTitle(photos) {
+  return photos.sort((a, b) => a.title.localeCompare(b.title));
+}
+
+// Sort photos
+async function sortPhotos(sortBy) {
+  let sortedPhotos;
+
+  switch (sortBy) {
+    case 'popularite':
+      sortedPhotos = sortByPopularity(photographerPhotos);
+      break;
+    case 'date':
+      sortedPhotos = sortByDate(photographerPhotos);
+      break;
+    case 'titre':
+      sortedPhotos = sortByTitle(photographerPhotos);
+      break;
+    default:
+      break;
+  }
+
+  createAndRenderMedia(sortedPhotos);
+}
+
+
+
+document.getElementById('filter-date').addEventListener('click', () => sortPhotos('date'));
+document.getElementById('filter-titre').addEventListener('click', () => sortPhotos('titre'));
+document.getElementById('filter-popularite').addEventListener('click', () => sortPhotos('popularite'));

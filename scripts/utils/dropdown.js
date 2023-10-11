@@ -1,3 +1,5 @@
+
+
 const dropdown = document.querySelector('.dropdown');
 const selected = dropdown.querySelector('.selected');
 const options = dropdown.querySelector('.dropdown-menu');
@@ -35,3 +37,4 @@ function toggleDropdown() {
     // Rotate the icon
     dropdownIcon.style.transform = options.style.display === 'block' ? 'rotate(90deg)' : 'rotate(0)';
 }
+
