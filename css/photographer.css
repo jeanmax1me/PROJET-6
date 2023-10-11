@@ -1,5 +1,6 @@
 body {
-    margin: 0 100px;
+    margin: 0 auto;
+    width: 1240px;
 }
 
 #contact_modal {
@@ -15,6 +16,7 @@ body {
     height: 313px;
     display: flex;
     position: relative;
+    width: 1240px;
 }
 
 .photograph-header h2 {
@@ -204,12 +206,16 @@ body {
 .photo {
     width: 350px;
     height: 350px;
-    margin: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
+
+.photo-info h3 {
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+    overflow: hidden;
+}
 
   .photo img {
     width: 100%;
@@ -228,15 +234,33 @@ body {
     letter-spacing: 0em;
     text-align: left;
     color: #901C1C;
-  }
-  
-  .photo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    display: flex;
+    align-items: center;
+    height: 50px;
     justify-content: space-between;
   }
   
+  .likes-container {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+  }
+  
+  .photo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 20px;
+    width: 1240px;
+  }
+  
+video {
+    min-width: 350px;
+    min-height: 300px;
+    object-fit: cover;
+}
+
   .photo-grid .photo {
     margin-bottom: 20px;
   }
