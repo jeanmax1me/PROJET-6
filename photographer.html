@@ -1,39 +1,76 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" >
-    <link href="css/photographer.css" rel="stylesheet" type="text/css" >
-    <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <title>Fisheye - photographe </title>
-  </head>
-  <body>
-    <header class="photographer_banner" role="banner">
+
+<head>
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <link href="css/photographer.css" rel="stylesheet" type="text/css">
+  <meta charset="utf-8">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+  <title>Fisheye - photographe </title>
+</head>
+
+<body>
+  <header class="photographer_banner" role="banner">
+    <a href="index.html">
       <img src="assets/images/logo.png" class="logo" alt="fisheye logo" width="512" height="128">
-    </header>
-    <main id="main" role="main">
-      <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+    </a>
+  </header>
+  <main id="main" role="main">
+    <div class="photograph-header">
+      <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+    </div>
+
+    <div class="photograph-content">
+
+      <h2 class="trier">Trier par</h2>
+
+      <div class="dropdown" role="combobox" aria-haspopup="listbox">
+        <div class="selected" tabindex="0" id="filter-popularite" aria-haspopup="listbox" aria-expanded="false"
+          aria-controls="options">Popularité</div>
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
+          class="dropdown-icon">
+          <g clip-path="url(#clip0_173725_75)">
+            <path d="M9.88 20.5466L16 14.44L22.12 20.5466L24 18.6666L16 10.6666L8 18.6666L9.88 20.5466Z" fill="white" />
+          </g>
+          <defs>
+            <clipPath id="clip0_173725_75">
+              <rect width="32" height="32" fill="white" transform="translate(32 32) rotate(-180)" />
+            </clipPath>
+          </defs>
+        </svg>
+        <ul id="options" class="dropdown-menu" role="listbox" aria-label="Options">
+          <div class="dropdown-divider"></div>
+          <li class="dropdown-option" tabindex="0" role="option" id="filter-date" aria-selected="true">Date</li>
+          <div class="dropdown-divider"></div>
+          <li class="dropdown-option" tabindex="0" role="option" id="filter-titre">Titre</li>
+        </ul>
       </div>
-    </main>
-    <div id="contact_modal">
-			<div class="modal">
-				<header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" alt="Close Button" width="42" height="42">
-        </header>
-				<form>
-					<div>
-						<label>Prénom</label>
-						<input />
-					</div>
-          <button class="contact_button">Envoyer</button>
-				</form>
-			</div>
-		</div>
-    <script type="module" src="scripts/templates/photographer.js"></script>
-    <script type="module" src="/scripts/pages/photographer.js"></script>
-    <script type="module" src="/scripts/utils/contactForm.js"></script>
-  </body>
+    
+    </div>
+    <div class="photo-grid" id="photo-grid">
+      <!-- Photos will be dynamically added here -->
+    </div>
+  </main>
+  <div id="contact_modal">
+    <div class="modal">
+      <header>
+        <h2>Contactez-moi</h2>
+        <img src="assets/icons/close.svg" onclick="closeModal()" alt="Close Button" width="42" height="42">
+      </header>
+      <form>
+        <div>
+          <label>Prénom</label>
+          <input />
+        </div>
+        <button class="contact_button">Envoyer</button>
+      </form>
+    </div>
+  </div>
+  <script type="module" src="./scripts/utils/dropdown.js"></script>
+  <script type="module" src="scripts/templates/photographer.js"></script>
+  <script type="module" src="/scripts/pages/photographer.js"></script>
+  <script type="module" src="/scripts/utils/contactForm.js"></script>
+</body>
+
 </html>
