@@ -1,5 +1,9 @@
 import { createMedia, calculateTotalLikes, updateTotalLikes } from './media.js';
 import { createImage, createCardContainer, createHeading, createParagraph } from '../templates/photographer.js';
+import { photographerPhotos } from './data.js';
+import { openCarousel } from './carousel.js'; // Import openCarousel function
+
+
 
 const urlSearchParams = new URLSearchParams(window.location.search);
 const photographerId = urlSearchParams.get('id');
@@ -13,24 +17,24 @@ if (photographerId) {
 
 async function initPhotographerProfile(id) {
   try {
-    const data = await getPhotographerById(id);
+    const data = await fetchPhotographerData(id);
     createPhotographerProfile(data);
   } catch (error) {
     console.error('Error initializing photographer profile:', error);
   }
 }
 
-let photographerPhotos = [];
-
-async function getPhotographerById(id) {
+// This function should now be responsible only for fetching data.
+async function fetchPhotographerData(id) {
   try {
     const response = await fetch(`../../data/photographers.json`);
-
     if (!response.ok) {
       throw new Error('Failed to fetch photographer data');
     }
     const data = await response.json();
-    photographerPhotos = data.media.filter(photo => photo.photographerId === parseInt(photographerId));
+    const filteredPhotos = data.media.filter(photo => photo.photographerId === parseInt(id));
+    photographerPhotos.length = 0; // Clear the existing array.
+    photographerPhotos.push(...filteredPhotos); // Replace the array with new data.
     createAndRenderMedia(photographerPhotos);
     sortPhotos('popularite');
     return data.photographers.find(photographer => photographer.id === parseInt(id, 10));
@@ -38,6 +42,9 @@ async function getPhotographerById(id) {
     throw error;
   }
 }
+
+// Rest of your code
+
 
 function createPhotographerProfile(data) {
   const { name, city, country, tagline, price, portrait, altname } = data;
@@ -92,7 +99,7 @@ function createAndRenderMedia(photos) {
 
     const mediaCard = document.createElement('div');
     mediaCard.classList.add('photo');
-
+  
 
     if (media.type === 'image') {
       // Create the image element
@@ -100,11 +107,13 @@ function createAndRenderMedia(photos) {
       image.src = media.url;
       image.alt = media.title;
       mediaCard.appendChild(image);
+      image.addEventListener('click', () => openCarousel(mediaData));
     } else if (media.type === 'video') {
       // Create the video element
       const video = createVideoElement(media.url, media.title);
       mediaCard.appendChild(video);
     }
+
 
     const photoInfo = document.createElement('div');
     photoInfo.classList.add('photo-info');

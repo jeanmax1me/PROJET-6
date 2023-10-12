@@ -183,11 +183,11 @@ body {
 }
 
 #filter-popularite:focus {
-    outline: 4px solid #D3573C;
+    outline: 4px ridge #D3573C;
 }
 
 .dropdown-option:focus {
-    outline: 4px solid #D3573C;
+    outline: 4px ridge #D3573C;
 }
 
 
@@ -442,3 +442,67 @@ form input {
     right: 0;
     top: 15px;
 }
+
+.lightbox-media {
+    width: 1050px;
+    height: 900px;
+    z-index: 1000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: auto;
+    object-fit: cover;
+}
+
+.image-carousel svg {
+    z-index: 1000;
+}
+
+/* CSS to style the image carousel */
+.image-carousel {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+  }
+  
+  .carousel-prev, .carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 48px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .carousel-prev {
+    left: 20px; /* Adjust as needed */
+  }
+  
+  .carousel-next {
+    right: 20px; /* Adjust as needed */
+  }
+  
+  .carousel-content {
+    position: relative;
+    text-align: center;
+    height: 100%;
+  }
+  
+  .carousel-close {
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+  }
