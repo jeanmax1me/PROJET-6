@@ -452,11 +452,11 @@ form input {
     left: 50%;
     transform: translate(-50%, -50%);
     margin: auto;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .image-carousel svg {
-    z-index: 1000;
+    z-index: 1234;
 }
 
 /* CSS to style the image carousel */
@@ -483,11 +483,12 @@ form input {
   }
   
   .carousel-prev {
-    left: 20px; /* Adjust as needed */
+    left : 10%; 
   }
   
   .carousel-next {
-    right: 20px; /* Adjust as needed */
+    right: 10%; 
+
   }
   
   .carousel-content {
@@ -498,8 +499,8 @@ form input {
   
   .carousel-close {
     position: absolute;
-    top: 20px; /* Adjust as needed */
-    right: 20px; /* Adjust as needed */
+    top: 20px; 
+    right: 10%; 
     background: none;
     border: none;
     cursor: pointer;
