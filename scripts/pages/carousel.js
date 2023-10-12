@@ -1,6 +1,6 @@
 // carousel.js
 import { createMedia } from './media.js';
-import { photographerPhotos } from './data.js'; // Import photographerPhotos from data.js
+import { photographerPhotos } from './data.js'; 
 
 // Global DOM variables
 const imageCarousel = document.getElementById('image-carousel');
@@ -12,15 +12,6 @@ const carouselContent = document.querySelector('.carousel-content');
 
 let currentImageIndex = 0;
 
-// Function to open the image carousel
-function openImageCarousel() {
-  imageCarousel.style.display = 'block';
-  overlay.style.display = 'block';
-
-  // Load the current image
-  loadCurrentImage();
-}
-
 // Function to open the image carousel with media data
 export function openCarousel(mediaData) {
   imageCarousel.style.display = 'block';
@@ -29,15 +20,13 @@ export function openCarousel(mediaData) {
   loadCurrentImage();
 }
 
-// Function to close the image carousel
 function closeImageCarousel() {
   imageCarousel.style.display = 'none';
   overlay.style.display = 'none';
 }
 
-// Function to load the current image into the carousel
+
 function loadCurrentImage() {
-  // Clear the existing content
   carouselContent.innerHTML = '';
 
   const media = createMedia(photographerPhotos[currentImageIndex]);
@@ -45,7 +34,7 @@ function loadCurrentImage() {
   mediaElement.classList.add('lightbox-media');
   carouselContent.appendChild(mediaElement);
 }
-// Rest of your code, including event listeners, stays the same
+
 
 
 // Handle previous button click

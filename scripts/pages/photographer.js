@@ -1,8 +1,7 @@
 import { createMedia, calculateTotalLikes, updateTotalLikes } from './media.js';
 import { createImage, createCardContainer, createHeading, createParagraph } from '../templates/photographer.js';
 import { photographerPhotos } from './data.js';
-import { openCarousel } from './carousel.js'; // Import openCarousel function
-
+import { openCarousel } from './carousel.js'; 
 
 
 const urlSearchParams = new URLSearchParams(window.location.search);
@@ -24,7 +23,6 @@ async function initPhotographerProfile(id) {
   }
 }
 
-// This function should now be responsible only for fetching data.
 async function fetchPhotographerData(id) {
   try {
     const response = await fetch(`../../data/photographers.json`);
@@ -36,15 +34,12 @@ async function fetchPhotographerData(id) {
     photographerPhotos.length = 0; // Clear the existing array.
     photographerPhotos.push(...filteredPhotos); // Replace the array with new data.
     createAndRenderMedia(photographerPhotos);
-    sortPhotos('popularite');
+    sortPhotos('popularite'); // Populating the page with the default sorting option "Popularité"
     return data.photographers.find(photographer => photographer.id === parseInt(id, 10));
   } catch (error) {
     throw error;
   }
 }
-
-// Rest of your code
-
 
 function createPhotographerProfile(data) {
   const { name, city, country, tagline, price, portrait, altname } = data;
