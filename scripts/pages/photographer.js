@@ -50,10 +50,12 @@ function createPhotographerProfile(data) {
   photographHeader.appendChild(imgcontainer);
 
   const h2 = createHeading('h2', name);
+  const modalname = createHeading('h2', name);
   const h3 = createHeading('h3', `${city}, ${country}`);
   const tag = createParagraph(tagline);
   photographHeader.append(h2, h3, tag);
-
+  const modalHeader = document.querySelector('.modal-header');
+  modalHeader.appendChild(modalname);
   const prix = createHeading('h3', price);
   const priceContainer = document.createElement('p');
   priceContainer.classList.add('price');

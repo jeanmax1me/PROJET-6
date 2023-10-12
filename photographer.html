@@ -18,7 +18,7 @@
   </header>
   <main id="main" role="main">
     <div class="photograph-header">
-      <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+      <button class="contact_button">Contactez-moi</button>
     </div>
 
     <div class="photograph-content">
@@ -56,25 +56,47 @@
     </div>
 
   </main>
-  <div id="contact_modal">
-    <div class="modal">
-      <header>
-        <h2>Contactez-moi</h2>
-        <img src="assets/icons/close.svg" onclick="closeModal()" alt="Close Button" width="42" height="42">
-      </header>
-      <form>
-        <div>
-          <label>Prénom</label>
-          <input />
-        </div>
-        <button class="contact_button">Envoyer</button>
-      </form>
+  <div id="contact_modal" class="modal" aria-hidden="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <header class="modal-header">
+          <h2>Contactez-moi</h2>
+          <svg class="modal-close-btn" aria-label="Fermer" aria-controls="contact_modal" width="42" height="42"
+            viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M42 4.23L37.77 0L21 16.77L4.23 0L0 4.23L16.77 21L0 37.77L4.23 42L21 25.23L37.77 42L42 37.77L25.23 21L42 4.23Z"
+              fill="white" />
+          </svg>
+
+        </header>
+        <form id="contact-form">
+          <div class="firstname-container">
+            <label for="first-name">Prénom</label>
+            <input id="first-name" type="text">
+          </div>
+          <div>
+            <label for="last-name">Nom</label>
+            <input id="last-name" type="text">
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" type="text">
+          </div>
+          <div class="message-container">
+            <label for="message">Votre message</label>
+            <input id="message" type="text">
+          </div>
+          <button class="send-button">Envoyer</button>
+        </form>
+      </div>
     </div>
   </div>
+  <div class="overlay"></div>
   <script type="module" src="./scripts/pages/photographer.js"></script>
   <script type="module" src="./scripts/utils/dropdown.js"></script>
   <script type="module" src="./scripts/templates/photographer.js"></script>
   <script type="module" src="./scripts/utils/contactForm.js"></script>
+  <script type="module" src="./scripts/pages/modal.js"></script>
 </body>
 
 </html>
