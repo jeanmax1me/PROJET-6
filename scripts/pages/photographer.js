@@ -1,4 +1,4 @@
-import { createMedia } from './media.js';
+import { createMedia, calculateTotalLikes, updateTotalLikes } from './media.js';
 import { createImage, createCardContainer, createHeading, createParagraph } from '../templates/photographer.js';
 
 const urlSearchParams = new URLSearchParams(window.location.search);
@@ -6,41 +6,18 @@ const photographerId = urlSearchParams.get('id');
 const likedMedia = new Set();
 
 if (photographerId) {
-  getPhotographerById(photographerId)
-    .then(data => {
-      const name = data.name;
-      const city = data.city;
-      const country = data.country;
-      const tagline = data.tagline;
-      const price = data.price;
-      const portrait = data.portrait;
-      const picture = `assets/photographers/${portrait}`;
-      const altname = data.altname;
-      const img = createImage(picture, altname);
-      const photographHeader = document.querySelector('.photograph-header');
-      const imgcontainer = createCardContainer([img]);
-      imgcontainer.appendChild(img);
-      photographHeader.appendChild(imgcontainer);
-      const h2 = createHeading('h2', name);
-      const h3 = createHeading('h3', `${city}, ${country}`);
-      const tag = createParagraph(tagline);
-      photographHeader.append(h2, h3, tag);
-      const prix = createHeading('h3', price);
-      const priceContainer = document.createElement('p');
-      priceContainer.classList.add('price');
-      priceContainer.textContent = price + '€ / jour';
-      const parentContainer = document.querySelector('.price-and-likes'); // Replace with the actual selector of your container
-      parentContainer.appendChild(priceContainer);   
-      const heart = createHeartIcon();
-      const path = heart.querySelector('path'); // Select the path element within the heart SVG
-      path.setAttribute('fill', 'black'); // Change the fill color to black
-      parentContainer.appendChild(heart);      
-    })
-    .catch(error => {
-      console.error('Error fetching photographer data:', error);
-    });
+  initPhotographerProfile(photographerId);
 } else {
   console.error('Photographer ID is missing or invalid.');
+}
+
+async function initPhotographerProfile(id) {
+  try {
+    const data = await getPhotographerById(id);
+    createPhotographerProfile(data);
+  } catch (error) {
+    console.error('Error initializing photographer profile:', error);
+  }
 }
 
 let photographerPhotos = [];
@@ -52,32 +29,50 @@ async function getPhotographerById(id) {
     if (!response.ok) {
       throw new Error('Failed to fetch photographer data');
     }
-
     const data = await response.json();
-    const photographer = data.photographers.find(photographer => photographer.id === parseInt(id, 10));
     photographerPhotos = data.media.filter(photo => photo.photographerId === parseInt(photographerId));
     createAndRenderMedia(photographerPhotos);
     sortPhotos('popularite');
-
-    
-    if (!photographer) {
-      throw new Error('Photographer not found');
-    }
-
-    return photographer;
+    return data.photographers.find(photographer => photographer.id === parseInt(id, 10));
   } catch (error) {
-    console.error('Error fetching photographer data:', error);
     throw error;
   }
 }
 
+function createPhotographerProfile(data) {
+  const { name, city, country, tagline, price, portrait, altname } = data;
+  const picture = `assets/photographers/${portrait}`;
+
+  const img = createImage(picture, altname);
+  const photographHeader = document.querySelector('.photograph-header');
+  const imgcontainer = createCardContainer([img]);
+  imgcontainer.appendChild(img);
+  photographHeader.appendChild(imgcontainer);
+
+  const h2 = createHeading('h2', name);
+  const h3 = createHeading('h3', `${city}, ${country}`);
+  const tag = createParagraph(tagline);
+  photographHeader.append(h2, h3, tag);
+
+  const prix = createHeading('h3', price);
+  const priceContainer = document.createElement('p');
+  priceContainer.classList.add('price');
+  priceContainer.textContent = price + '€ / jour';
+  const parentContainer = document.querySelector('.price-and-likes');
+  parentContainer.appendChild(priceContainer);
+
+  const heart = createHeartIcon();
+  const path = heart.querySelector('path');
+  path.setAttribute('fill', 'black');
+  parentContainer.appendChild(heart);
+}
 
 function createVideoElement(src, alt) {
   const video = document.createElement('video');
   video.src = src;
   video.type = 'video/mp4';
   video.alt = alt;
-  video.controls = true; // Add video controls
+  video.controls = true;
   return video;
 }
 
@@ -108,38 +103,32 @@ function createAndRenderMedia(photos) {
       const video = createVideoElement(media.url, media.title);
       mediaCard.appendChild(video);
     }
-     
+
     const photoInfo = document.createElement('div');
     photoInfo.classList.add('photo-info');
     mediaCard.appendChild(photoInfo);
     const title = document.createElement('h3');
     title.textContent = `${media.title}`;
     photoInfo.appendChild(title);
-    // Create and add the heart icon
-        // Create the likes container
-        const likesContainer = document.createElement('div');
-        likesContainer.classList.add('likes-container');
-           // Create the likes text element
+    const likesContainer = document.createElement('div');
+    likesContainer.classList.add('likes-container');
     const likes = document.createElement('p');
     likes.textContent = `${media.likes}`;
     likes.classList.add('photo-likes');
-    
+
     likesContainer.appendChild(likes);
     photoInfo.appendChild(likesContainer);
     const heart = createHeartIcon();
     likesContainer.appendChild(heart);
-   
-
 
     // Event listener for clicking the heart icon
-    heart.addEventListener('click', () => likeMedia(media.id, mediaCard, likes));
-
+    heart.addEventListener('click', () => likeMedia(media.id, mediaCard, likes, heart));
     // Render the media card
     photoGrid.appendChild(mediaCard);
   });
 }
 
-function likeMedia(mediaId, mediaCard, likesElement) {
+function likeMedia(mediaId, mediaCard, likesElement, heart) {
   if (!likedMedia.has(mediaId)) {
     // Media hasn't been liked yet
     const media = photographerPhotos.find(media => media.id === mediaId);
@@ -147,7 +136,7 @@ function likeMedia(mediaId, mediaCard, likesElement) {
       media.likes += 1;
       likedMedia.add(mediaId);
       likesElement.textContent = `${media.likes}`;
-      heart.classList.add('liked'); // You can add a CSS class to style the liked heart differently
+      heart.classList.add('liked'); 
       updateTotalLikes();
     }
   }
@@ -212,41 +201,13 @@ document.getElementById('filter-date').addEventListener('click', () => sortPhoto
 document.getElementById('filter-titre').addEventListener('click', () => sortPhotos('titre'));
 document.getElementById('filter-popularite').addEventListener('click', () => sortPhotos('popularite'));
 
+document.addEventListener('DOMContentLoaded', async () => {
 
-
-document.addEventListener('DOMContentLoaded', function() {
-  function calculateTotalLikes() {
-    const likeElements = document.querySelectorAll('.photo-likes');
-    let totalLikes = 0;
-
-    likeElements.forEach(likeElement => {
-      const likes = parseInt(likeElement.textContent);
-      if (!isNaN(likes)) {
-        totalLikes += likes;
-      }
-    });
-
-    return totalLikes;
-  }
-
-  function updateTotalLikes() {
-    const totalLikes = calculateTotalLikes();
-    const priceAndLikesContainer = document.querySelector('.total_likes');
-    priceAndLikesContainer.innerHTML = `<span class="total-likes">${totalLikes}</span>`
-  }
-
-  // Listen for changes to the DOM, e.g., when "photo-likes" elements are added or updated
   const observer = new MutationObserver(updateTotalLikes);
-
-  // Specify the target node (the part of the DOM that might change)
   const targetNode = document.querySelector('.photo-grid');
-
-  // Configure the observer to watch for changes to child elements
   const config = { childList: true, subtree: true };
-
-  // Start observing
   observer.observe(targetNode, config);
 
-  // Calculate and display the initial total likes
   updateTotalLikes();
 });
+

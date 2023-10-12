@@ -170,13 +170,13 @@ body {
 }
 
 .dropdown-option:hover {
-    background-color: orange; 
+    background-color: #1C9090; 
     color: #FFFFFF; 
 }
 
 
 .dropdown-option:focus {
-    outline: 5px solid orange; 
+    outline: 4px solid #1C9090; 
 }
 
 
@@ -293,7 +293,20 @@ video {
     padding-left: 31px;
     padding-right: 4.62px;
 }
+
+/* Define the heartbeat animation */
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
   
+  /* Apply the animation to the heart SVG when it has the .liked class */
+  .liked {
+    animation: heartbeat 0.5s 1;
+  }
+
+
 .modal {
     border-radius: 5px;
     background-color: #DB8876;
