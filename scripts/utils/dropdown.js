@@ -1,76 +1,64 @@
-
+import { sortPhotos } from "../pages/photographer.js";
 
 const dropdown = document.querySelector('.dropdown');
 const selected = dropdown.querySelector('.selected');
 const options = dropdown.querySelector('.dropdown-menu');
 const dropdownIcon = dropdown.querySelector('.dropdown-icon');
+const sortOptions = Array.from(options.querySelectorAll('.dropdown-option'));
 
-selected.addEventListener('click', () => {
-    toggleDropdown();
-});
-
-options.addEventListener('click', (e) => {
-    if (e.target.classList.contains('dropdown-option')) {
-        const selectedText = selected.textContent;
-        selected.textContent = e.target.textContent;
-        e.target.textContent = selectedText;
-        selected.setAttribute('aria-label', `Selected option: ${e.target.textContent}`);
-        selected.setAttribute('aria-expanded', 'false');
-        options.style.display = 'none';
-        
-        // Reset the icon rotation
-        dropdownIcon.style.transform = 'rotate(0)';
-    }
-});
+// Initialize the selected option as "Popularité"
+let selectedOption = 'filter-popularite';
 
 // Function to toggle the dropdown
 function toggleDropdown() {
-    options.style.display = options.style.display === 'block' ? 'none' : 'block';
-    selected.setAttribute('aria-expanded', options.style.display === 'block' ? 'true' : 'false');
-    
-    // Rotate the icon
-    dropdownIcon.style.transform = options.style.display === 'block' ? 'rotate(90deg)' : 'rotate(0)';
+  options.style.display = options.style.display === 'block' ? 'none' : 'block';
+  selected.setAttribute('aria-expanded', options.style.display === 'block' ? 'true' : 'false');
+  dropdownIcon.style.transform = options.style.display === 'block' ? 'rotate(90deg)' : 'rotate(0)';
 }
 
-selected.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      toggleDropdown();
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      options.style.display = 'block';
-      options.querySelector('.dropdown-option').focus();
-    }
-  });
-  
-  options.addEventListener('keydown', (e) => {
-    const optionElements = options.querySelectorAll('.dropdown-option');
-    const currentOptionIndex = Array.from(optionElements).indexOf(e.target);
-  
-    if (e.key === 'Enter') {
-      const selectedText = selected.textContent;
-      selected.textContent = e.target.textContent;
-      e.target.textContent = selectedText;
-      selected.setAttribute('aria-label', `Selected option: ${e.target.textContent}`);
-      selected.setAttribute('aria-expanded', 'false');
-      options.style.display = 'none';
-  
-      // Reset the icon rotation
-      dropdownIcon.style.transform = 'rotate(0)';
-      selected.focus();
-    } else if (e.key === 'Escape') {
-      options.style.display = 'none';
-      selected.setAttribute('aria-expanded', 'false');
-      dropdownIcon.style.transform = 'rotate(0)';
-      selected.focus();
-    } else if (e.key === 'ArrowUp' && currentOptionIndex > 0) {
-      e.preventDefault();
-      optionElements[currentOptionIndex - 1].focus();
-    } else if (e.key === 'ArrowDown' && currentOptionIndex < optionElements.length - 1) {
-      e.preventDefault();
-      optionElements[currentOptionIndex + 1].focus();
-    }
-  });
-  
+// Function to handle selecting an option
+function selectOption(optionId) {
+  // Get the previously selected option
+  const previousOptionId = selectedOption;
 
+  // Remove the previously selected option from the selected div
+  if (previousOptionId !== optionId) {
+    const previousOptionElement = document.getElementById(previousOptionId);
+    selected.removeChild(previousOptionElement);
+
+    // Reorder the items to reflect the new selection
+    options.appendChild(previousOptionElement);
+    sortOptions.filter(option => option.id !== previousOptionId).sort((a, b) => a.getAttribute('data-order') - b.getAttribute('data-order')).forEach((option, index) => {
+      option.style.order = index + 1;
+    });
+  }
+
+  // Set the new selected option
+  selectedOption = optionId;
+  const selectedOptionElement = document.getElementById(optionId);
+  selected.appendChild(selectedOptionElement);
+  selected.setAttribute('aria-label', `Selected option: ${selected.textContent}`);
+  options.style.display = 'none';
+  dropdownIcon.style.transform = 'rotate(0)';
   
-  
+  // Call your sorting function with the selected option (e.g., 'popularite', 'date', 'titre')
+  sortPhotos(optionId);
+}
+
+// Add click event listeners to open/close the dropdown
+selected.addEventListener('click', () => toggleDropdown());
+selected.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    toggleDropdown();
+  }
+});
+
+// Add click event listeners to select an option
+sortOptions.forEach((option) => {
+  option.addEventListener('click', (e) => {
+    selectOption(e.target.id);
+  });
+});
+
+// Set the initial selected option
+selectOption(selectedOption);

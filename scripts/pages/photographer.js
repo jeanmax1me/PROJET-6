@@ -181,7 +181,7 @@ function sortByTitle(photos) {
 }
 
 // Sort photos
-async function sortPhotos(sortBy) {
+export async function sortPhotos(sortBy) {
   let sortedPhotos;
 
   switch (sortBy) {

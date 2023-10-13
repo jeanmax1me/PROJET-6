@@ -128,6 +128,7 @@ body {
 .dropdown-menu {
     display: none;
     transition: display 0.2s ease;
+    list-style: none;
 }
 
 .dropdown-option {
@@ -143,7 +144,7 @@ body {
     background: #901C1C;
 }
 
-#filter-popularite {
+.selected {
     height: 64px;
     border: none;
     border-radius: 5px;
@@ -164,6 +165,19 @@ body {
     letter-spacing: 0em;
     color: white;
     background: #901C1C;
+}
+
+.selected .dropdown-option {
+    order: 1; 
+  }
+
+.selected .dropdown-option[order="1"] {
+    display: block; 
+    order: 1;
+  }
+  
+li {
+    list-style: none;
 }
 
 .dropdown-icon {
@@ -190,6 +204,32 @@ body {
     outline: 4px groove #D3573C;
 }
 
+#filter-popularite {
+  
+    border: none;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 10px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    font-family: DM Sans;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 23px;
+    letter-spacing: 0em;
+    color: white;
+    background: #901C1C;
+}
+
+.dropdown svg {
+    position: absolute;
+    z-index: 500;
+}
 
 #filter-date {
     padding: 14px 0 14px 20px;
