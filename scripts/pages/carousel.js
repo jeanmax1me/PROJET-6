@@ -1,6 +1,6 @@
 // carousel.js
 import { createMedia } from './media.js';
-import { photographerPhotos } from './data.js'; 
+import { photographerPhotos } from './data.js';
 
 // Global DOM variables
 const imageCarousel = document.getElementById('image-carousel');
@@ -18,7 +18,9 @@ export function openCarousel(mediaData) {
   overlay.style.display = 'block';
   currentImageIndex = photographerPhotos.findIndex(item => item.id === mediaData.id);
   loadCurrentImage();
+  document.addEventListener('keydown', handleKeyDown);
 }
+
 
 function closeImageCarousel() {
   imageCarousel.style.display = 'none';
@@ -39,18 +41,18 @@ function loadCurrentImage() {
 
 // Handle previous button click
 prevButton.addEventListener('click', () => {
-    if (currentImageIndex > 0) {
-        currentImageIndex--;
-        loadCurrentImage();
-    }
+  if (currentImageIndex > 0) {
+    currentImageIndex--;
+    loadCurrentImage();
+  }
 });
 
 // Handle next button click
 nextButton.addEventListener('click', () => {
-    if (currentImageIndex < photographerPhotos.length - 1) {
-        currentImageIndex++;
-        loadCurrentImage();
-    }
+  if (currentImageIndex < photographerPhotos.length - 1) {
+    currentImageIndex++;
+    loadCurrentImage();
+  }
 });
 
 // Handle close button click
@@ -60,9 +62,32 @@ overlay.addEventListener('click', closeImageCarousel);
 // Add click event listeners to open the image carousel
 const mediaGridItems = document.querySelectorAll('.photo');
 mediaGridItems.forEach((mediaItem, index) => {
-    mediaItem.addEventListener('click', () => {
-      currentImageIndex = index;
-      openCarousel(photographerPhotos[index], photographerPhotos); // Pass the media data and the photos array
-    });
+  mediaItem.addEventListener('click', () => {
+    currentImageIndex = index;
+    openCarousel(photographerPhotos[index], photographerPhotos); // Pass the media data and the photos array
   });
-  
+});
+
+
+function handleKeyDown(event) {
+  switch (event.key) {
+    case 'ArrowLeft':
+      // Handle the left arrow key (previous media)
+      if (currentImageIndex > 0) {
+        currentImageIndex--;
+        loadCurrentImage();
+      }
+      break;
+    case 'ArrowRight':
+      // Handle the right arrow key (next media)
+      if (currentImageIndex < photographerPhotos.length - 1) {
+        currentImageIndex++;
+        loadCurrentImage();
+      }
+      break;
+    case 'Escape':
+      // Handle the Escape key (close carousel)
+      closeImageCarousel();
+      break;
+  }
+}

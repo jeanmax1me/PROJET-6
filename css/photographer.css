@@ -475,11 +475,15 @@ form input {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 30px;
-    height: 48px;
+    width: 200px;
+    height: 200px;
     background: none;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1234;
   }
   
   .carousel-prev {
@@ -504,6 +508,11 @@ form input {
     background: none;
     border: none;
     cursor: pointer;
-    width: 42px;
-    height: 42px;
+    width: 200px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1234;
   }
+
