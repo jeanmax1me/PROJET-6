@@ -1,4 +1,5 @@
-import { createMedia, calculateTotalLikes, updateTotalLikes } from './media.js';
+import { calculateTotalLikes, updateTotalLikes } from './likes.js';
+ import { createMedia } from './media.js';
 import { createImage, createCardContainer, createHeading, createParagraph } from '../templates/photographer.js';
 import { photographerPhotos } from './data.js';
 import { openCarousel } from './carousel.js'; 

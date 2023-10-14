@@ -171,6 +171,11 @@ body {
     color: white;
     background: #901C1C;
   }
+
+
+.selected:hover {
+    background-color: #D3573C;
+}
   
   .dropdown-icon {
     position: absolute;
@@ -222,10 +227,6 @@ li {
     top: 113px; /* Position the first divider */
   }
   
-  .dropdown-divider:last-of-type {
-    top: 113px; /* Position the second divider */
-  }
-
 
 .photo {
     width: 350px;
@@ -436,11 +437,20 @@ form input {
     height: 68px;
     border: none;
     border-radius: 5px;
+    padding: 8px; 
+    font-size: 18px;
 }
 
 #message {
     height: 170px;
     margin-bottom: 26px;
+    vertical-align: top;
+    white-space: wrap;
+    line-height: 1;
+    width: 100%;
+    border-radius: 5px;
+    padding: 8px; 
+    font-size: 18px;
 }
 
 .message-container {
@@ -486,7 +496,7 @@ form input {
     top: 50%;
     transform: translateY(-50%);
     width: 200px;
-    height: 200px;
+    height: 400px;
     background: none;
     border: none;
     cursor: pointer;
@@ -497,12 +507,11 @@ form input {
   }
   
   .carousel-prev {
-    left : 10%; 
+    left : 25px; 
   }
   
   .carousel-next {
-    right: 10%; 
-
+    right: 25px; 
   }
   
   .carousel-content {
@@ -514,7 +523,7 @@ form input {
   .carousel-close {
     position: absolute;
     top: 20px; 
-    right: 10%; 
+    right: 25px; 
     background: none;
     border: none;
     cursor: pointer;
