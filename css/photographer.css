@@ -387,11 +387,16 @@ video {
 }
 
 
+
 .modal header {
     display: flex;
     flex-direction: column;
     width: 100%;
     position: relative;
+}
+
+.field-error {
+    outline: 7px groove #dc3545;;
 }
 
 .modal header img {
