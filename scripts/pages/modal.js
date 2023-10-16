@@ -119,6 +119,12 @@ messageInput.addEventListener("input", function() {
       messageValid;
 
     if (isValid) {
+   console.log(
+        "First name: " + firstNameInput.value + "\n" +
+        "Last name: " + lastNameInput.value + "\n" +
+        "Email: " + emailInput.value + "\n" +
+        "Message: " + messageInput.value
+      );      
       event.preventDefault();
       closeModal();
       return true;
