@@ -35,6 +35,10 @@ function loadCurrentImage() {
   const mediaElement = media.createMediaElement();
   mediaElement.classList.add('lightbox-media');
   carouselContent.appendChild(mediaElement);
+  const mediaTitle = document.createElement('div');
+  mediaTitle.classList.add('media-title');
+  mediaTitle.textContent = media.title;
+  carouselContent.appendChild(mediaTitle);
 }
 
 

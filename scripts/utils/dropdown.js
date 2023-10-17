@@ -47,7 +47,6 @@ function selectOption(optionId) {
   options.style.display = 'none';
   dropdownIcon.style.transform = 'rotate(0)';
   
-  // Call your sorting function with the selected option (e.g., 'popularite', 'date', 'titre')
   sortPhotos(optionId);
 }
 
@@ -59,10 +58,15 @@ selected.addEventListener('keydown', (e) => {
   }
 });
 
-// Add click event listeners to select an option
 sortOptions.forEach((option) => {
   option.addEventListener('click', (e) => {
     selectOption(e.target.id);
+  });
+
+  option.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === 'Space') {
+      selectOption(e.target.id);
+    }
   });
 });
 

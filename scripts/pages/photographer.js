@@ -3,6 +3,7 @@ import { calculateTotalLikes, updateTotalLikes } from './likes.js';
 import { createImage, createCardContainer, createHeading, createParagraph } from '../templates/photographer.js';
 import { photographerPhotos } from './data.js';
 import { openCarousel } from './carousel.js'; 
+import { fetchPhotographerData } from './photographerData.js';
 
 
 const urlSearchParams = new URLSearchParams(window.location.search);
@@ -24,23 +25,7 @@ async function initPhotographerProfile(id) {
   }
 }
 
-async function fetchPhotographerData(id) {
-  try {
-    const response = await fetch(`../../data/photographers.json`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch photographer data');
-    }
-    const data = await response.json();
-    const filteredPhotos = data.media.filter(photo => photo.photographerId === parseInt(id));
-    photographerPhotos.length = 0; // Clear the existing array.
-    photographerPhotos.push(...filteredPhotos); // Replace the array with new data.
-    createAndRenderMedia(photographerPhotos);
-    sortPhotos('popularite'); // Populating the page with the default sorting option "Popularité"
-    return data.photographers.find(photographer => photographer.id === parseInt(id, 10));
-  } catch (error) {
-    throw error;
-  }
-}
+
 
 function createPhotographerProfile(data) {
   const { name, city, country, tagline, price, portrait, altname } = data;
@@ -81,7 +66,7 @@ function createVideoElement(src, alt) {
   return video;
 }
 
-function createAndRenderMedia(photos) {
+export function createAndRenderMedia(photos) {
   if (!photos) {
     console.error('No media data available for this photographer.');
     return;
@@ -203,10 +188,27 @@ export async function sortPhotos(sortBy) {
 }
 
 
-
 document.getElementById('filter-date').addEventListener('click', () => sortPhotos('date'));
+document.getElementById('filter-date').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    sortPhotos('date');
+  }
+});
+
 document.getElementById('filter-titre').addEventListener('click', () => sortPhotos('titre'));
+document.getElementById('filter-titre').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    sortPhotos('titre');
+  }
+});
+
 document.getElementById('filter-popularite').addEventListener('click', () => sortPhotos('popularite'));
+document.getElementById('filter-popularite').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    sortPhotos('popularite');
+  }
+});
+
 
 document.addEventListener('DOMContentLoaded', async () => {
 
