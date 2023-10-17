@@ -88,7 +88,13 @@ export function createAndRenderMedia(photos) {
       image.src = media.url;
       image.alt = media.title;
       mediaCard.appendChild(image);
+      image.setAttribute('tabindex', '0');
       image.addEventListener('click', () => openCarousel(mediaData));
+      image.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          openCarousel(mediaData);
+        }
+      });
     } else if (media.type === 'video') {
       // Create the video element
       const video = createVideoElement(media.url, media.title);
