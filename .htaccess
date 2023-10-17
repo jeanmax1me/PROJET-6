@@ -1,0 +1,5 @@
+# Cache static assets for 6 months
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 6 months"
+</IfModule>
