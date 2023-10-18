@@ -530,12 +530,15 @@ form input {
 
 .media-title {
     position: absolute;
-    bottom: 90px;
+    bottom: 0px;
+    background: white;
+    padding: 10px 20px;
     z-index: 1234;
     color: #901C1C;
     font-size: 24px;
     font-weight: 400;
     line-height: 31px;
     letter-spacing: 0em;
-    left: 270px;  
+    left: 50%;
+    transform: translateX(-50%);  
 }
