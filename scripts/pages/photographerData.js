@@ -4,7 +4,7 @@ import { photographerPhotos } from './data.js';
 
 export async function fetchPhotographerData(id) {
     try {
-      const response = await fetch(`../../PROJET-6/data/photographers.json`);
+      const response = await fetch('data/photographers.json');
       if (!response.ok) {
         throw new Error('Failed to fetch photographer data');
       }

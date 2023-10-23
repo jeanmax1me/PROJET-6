@@ -4,7 +4,7 @@ import { createUserCardDOM } from '../templates/photographer.js';
 
 async function getPhotographers() {
   try {
-    const response = await fetch('../../PROJET-6/data/photographers.json');
+    const response = await fetch('data/photographers.json');
     if (!response.ok) {
       throw new Error('Failed to fetch data');
     }
